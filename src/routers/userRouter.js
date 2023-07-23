@@ -66,7 +66,7 @@ router.post('/logout',auth,async (req,res) => {
             })
 
             await req.user.save()
-            sendCancelationEmail(requser.email,req.user.username);
+            sendCancelationEmail(req.user.email,req.user.username);
             res.send()
     }
     catch(e){
