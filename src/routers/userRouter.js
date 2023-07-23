@@ -3,11 +3,20 @@ const router = new express.Router()
 const User = require('../models/userModel')
 const {sendWelcomeEmail,sendCancelationEmail} = require('../emails/account')
 const auth = require('../middleware/auth')
-
+const bcrypt = require('bcryptjs')
 
 //signup user
 router.post('/register',async (req,res)=>{
-    const user = new User(req.body)
+    const {password} = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new User instance with the hashed password
+    const user = new User({
+      ...req.body,
+      password: hashedPassword, // Save the hashed password
+    });
+
+    
 
     try{
 
@@ -62,7 +71,7 @@ router.post('/logout',auth,async (req,res) => {
     }
     catch(e){
         console.log(e);
-        res.status(500).send()
+        res.status(500).send(e)
     }
 })
 
