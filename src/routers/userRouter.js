@@ -1,7 +1,7 @@
 const express = require('express')
 const router = new express.Router()
 const User = require('../models/userModel')
-const {sendWelcomeEmail,sendCancelationEmail} = require('../emails/account')
+//const {sendWelcomeEmail,sendCancelationEmail} = require('../emails/account')
 const auth = require('../middleware/auth')
 const bcrypt = require('bcryptjs')
 
@@ -21,7 +21,7 @@ router.post('/register',async (req,res)=>{
     try{
 
         await user.save()
-        sendWelcomeEmail(user.email,user.username);
+       // sendWelcomeEmail(user.email,user.username);
         const token = await user.generateAuthToken()
         res.status(201).send({user,token})
 
@@ -66,7 +66,7 @@ router.post('/logout',auth,async (req,res) => {
             })
 
             await req.user.save()
-            sendCancelationEmail(req.user.email,req.user.username);
+            //sendCancelationEmail(req.user.email,req.user.username);
             res.send()
     }
     catch(e){
